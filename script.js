@@ -47,6 +47,24 @@ btn.addEventListener("click",()=>{
     voice.style.display="block"
 })
 
+//api function to get weather data
+const getWeather = async (latitude, longitude) => {
+    try {
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
+        const data = await response.json();
+        
+        if (data.current_weather) {
+            speak(`Temperature: ${data.current_weather.temperature}°C`);
+            speak(`Wind Speed: ${data.current_weather.windspeed} km/h`);
+            speak(`Location: Latitude ${latitude}, Longitude ${longitude}`);
+        } else {
+            console.log("Weather data not found!");
+        }
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+    }
+};
+
 //function to take command 
 function takeCommand(message){
     btn.style.display="flex"
@@ -55,7 +73,7 @@ function takeCommand(message){
     if(message.includes("hello")||message.includes("hey")||message.includes("hi")){
         speak("hello sir,what can i help you?")
     }
-    else if(message.includes("who are you")||message.includes("what is your name")){
+    else if(message.includes("who are you")||message.includes("what is your name")||message.includes("hu r u")){
         speak("i am virtual assistant kaali ,created by Tilak raj mandal sir")
     }
     else if(message.includes("who created you")){
@@ -90,6 +108,9 @@ function takeCommand(message){
         let query = message.toLowerCase().replace("search youtube", "").trim();
         let searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
         window.open(searchUrl, "_blank"); // Opens in a new tab
+    }
+    else if(message.includes("weather")){
+        getWeather(26.4525, 87.2718);
     }
     else{
         let finalText="this is what i found on internet regarding" + message.replace("kali","") || message.replace("kaali","")
