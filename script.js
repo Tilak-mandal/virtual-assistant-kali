@@ -2,6 +2,7 @@ let btn = document.querySelector("#btn")
 let content = document.querySelector("#content")
 let logo = document.querySelector("#logo")
 let voice = document.querySelector("#voice")
+let text = document.querySelector("#text")
 
 //function to speak
 function speak(text){
@@ -57,6 +58,11 @@ const getWeather = async (latitude, longitude) => {
             speak(`Temperature: ${data.current_weather.temperature}°C`);
             speak(`Wind Speed: ${data.current_weather.windspeed} km/h`);
             speak(`Location: Latitude ${latitude}, Longitude ${longitude}`);
+            text.innerText = `Temperature: ${data.current_weather.temperature}°C
+                             Wind Speed: ${data.current_weather.windspeed} km/h
+                             Location: Latitude ${latitude}, Longitude ${longitude}`
+            text.style.display="block"
+            audio.play()
         } else {
             console.log("Weather data not found!");
         }
@@ -98,10 +104,16 @@ function takeCommand(message){
     else if(message.includes("time")){
         let time= new Date().toLocaleString(undefined,{hour:"numeric",minute:"numeric"})
         speak(time)
+        text.innerText = time
+        text.style.display="block"
+        audio.play()
     }
     else if(message.includes("date")){
         let date= new Date().toLocaleString(undefined,{year:"numeric",day:"numeric",month:"short"})
         speak(date)
+        text.innerText = date
+        text.style.display="block"
+        audio.play()
     }
     else if (message.toLowerCase().includes("search youtube")) {
         speak("searching in youtube...")
